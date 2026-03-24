@@ -101,11 +101,11 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div class="container">
 <header>
 <h1>Folketingsvalg 2026</h1>
-<p>Exitpoll-dashboard &middot; 24. marts 2026</p>
+<p>Valgresultat-dashboard &middot; 24. marts 2026</p>
 </header>
-<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
-<div style="font-size:.68rem;color:var(--tx3);line-height:1.5">Data fra valg.dk tastes ind i Claude og uploades til GitHub &middot; Genereret kl. 22:37</div>
-<button onclick="location.reload()" style="font-family:inherit;font-size:.7rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
+<div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 22:47<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
+<button onclick="location.reload()" style="font-family:inherit;font-size:.72rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
 </div>
 <div class="section-label">Datakilde</div>
 <div class="tabs" id="tabs"></div>
@@ -126,8 +126,8 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div id="compat"></div>
 <div class="footer">
 <div style="font-size:.85rem;font-weight:600;color:var(--tx2);margin-bottom:.5rem">Deles uden ansvar</div>
-Exitpoll-data: DR/Epinion &amp; TV 2/Megafon. Faktiske resultater: valg.dk. Prognose: DR.<br>
-Mandatestimater via forholdstalsfordeling af 175 mandater (undtagen DR Prognose som bruger DR's egne mandattal).<br>
+Faktiske resultater: valg.dk. Prognose: DR. Reference: Folketingsvalg 2022.<br>
+Mandatestimater via forholdstalsfordeling af 175 mandater (DR Prognose bruger DR's egne mandattal).<br>
 Kompatibilitetsvurderinger er redaktionelle estimater baseret p&aring; partiernes udmeldinger valgaften.<br>
 <span style="color:var(--tx3)">Bygget med Claude &middot; Valgaften 24. marts 2026</span>
 </div>
@@ -141,7 +141,7 @@ var P=[
   {id:"O",name:"Dansk Folkeparti",short:"DF",color:"#eab308",dr:7.5,tv2:7.6,v22:2.6,bloc:"blue"},
   {id:"C",name:"Konservative",short:"K",color:"#059669",dr:7.1,tv2:7.5,v22:5.5,bloc:"blue"},
   {id:"Ae",name:"Danmarksdemokraterne",short:"DD",color:"#a16207",dr:7.8,tv2:6.8,v22:8.1,bloc:"blue"},
-  {id:"Oe",name:"Enhedslisten",short:"EL",color:"#e11d48",dr:6.4,tv2:6.6,v22:5.1,bloc:"red"},
+  {id:"Oe",name:"Enhedslisten",short:"EL",color:"#e11d48",dr:6.4,tv2:6.6,v22:5.2,bloc:"red"},
   {id:"M",name:"Moderaterne",short:"M",color:"#8b5cf6",dr:8.2,tv2:5.6,v22:9.3,bloc:"mid"},
   {id:"B",name:"Radikale Venstre",short:"RV",color:"#7c3aed",dr:6.0,tv2:5.4,v22:3.8,bloc:"red"},
   {id:"Aa",name:"Alternativet",short:"Alt",color:"#16a34a",dr:4.1,tv2:3.5,v22:3.3,bloc:"red"},
@@ -161,7 +161,8 @@ var LIVE_HISTORY = [
   {time:"22:24",areas:1116,total:1314,pctCounted:70.8,data:{"A":22.8,"V":11.2,"F":11.0,"O":9.7,"I":9.3,"M":7.6,"C":7.4,"Ae":7.0,"Oe":4.8,"B":4.8,"H":2.4,"Aa":2.0}},
   {time:"22:32",areas:1161,total:1314,pctCounted:77.2,data:{"A":22.7,"F":11.1,"V":11.0,"O":9.6,"I":9.3,"M":7.6,"C":7.4,"Ae":6.7,"Oe":5.0,"B":5.0,"H":2.3,"Aa":2.1}},
   {time:"22:34",areas:1167,total:1314,pctCounted:78.3,data:{"A":22.6,"F":11.1,"V":11.0,"O":9.6,"I":9.4,"M":7.6,"C":7.5,"Ae":6.7,"Oe":5.1,"B":5.0,"H":2.3,"Aa":2.1}},
-  {time:"22:36",areas:1178,total:1314,pctCounted:79.7,data:{"A":22.6,"F":11.2,"V":10.9,"O":9.5,"I":9.3,"M":7.6,"C":7.5,"Ae":6.6,"Oe":5.2,"B":5.1,"H":2.3,"Aa":2.2}}
+  {time:"22:36",areas:1178,total:1314,pctCounted:79.7,data:{"A":22.6,"F":11.2,"V":10.9,"O":9.5,"I":9.3,"M":7.6,"C":7.5,"Ae":6.6,"Oe":5.2,"B":5.1,"H":2.3,"Aa":2.2}},
+  {time:"22:46",areas:1220,total:1314,pctCounted:85.9,data:{"A":22.4,"F":11.3,"V":10.8,"I":9.4,"O":9.4,"M":7.7,"C":7.5,"Ae":6.4,"Oe":5.4,"B":5.3,"H":2.3,"Aa":2.2}}
 ];
 
 var DR_PROGNOSE = {
@@ -234,23 +235,13 @@ var src = "live";
 var selected = {};
 
 function val(p) {
-  if (src === "dr") return p.dr;
-  if (src === "tv2") return p.tv2;
-  if (src === "median") return Math.round((p.dr + p.tv2) / 2 * 10) / 10;
   if (src === "prognose") {
     if (DR_PROGNOSE.pct[p.id] !== undefined) return DR_PROGNOSE.pct[p.id];
     return 0;
   }
-  if (src === "live") {
-    var latest = LIVE_HISTORY[LIVE_HISTORY.length - 1];
-    if (latest && latest.data[p.id] !== undefined) return latest.data[p.id];
-    return 0;
-  }
+  var latest = LIVE_HISTORY[LIVE_HISTORY.length - 1];
+  if (latest && latest.data[p.id] !== undefined) return latest.data[p.id];
   return 0;
-}
-
-function medianVal(p) {
-  return Math.round((p.dr + p.tv2) / 2 * 10) / 10;
 }
 
 function calcSeats() {
@@ -339,28 +330,10 @@ function render() {
     var barW = mx > 0 ? (p.pct / mx * 100).toFixed(1) : 0;
     var seatVal = sMap[p.id] || 0;
 
-    var exitBarHtml = "";
-    if (src === "live") {
-      var eMed = Math.round((p.dr + p.tv2) / 2 * 10) / 10;
-      var exitBarW = mx > 0 ? (eMed / mx * 100).toFixed(1) : 0;
-      exitBarHtml = '<div class="p-bar-exit" style="width:' + exitBarW + '%"></div>';
-    }
-
-    var deltaHtml = "";
-    if (src === "live") {
-      var eMed2 = Math.round((p.dr + p.tv2) / 2 * 10) / 10;
-      var diff = Math.round((p.pct - eMed2) * 10) / 10;
-      if (diff !== 0) {
-        var dCls = diff > 0 ? "pos" : "neg";
-        var dSign = diff > 0 ? "+" : "";
-        deltaHtml = '<span class="delta-badge ' + dCls + '">' + dSign + diff.toFixed(1) + ' vs exit</span>';
-      }
-    }
-
     pH += '<div class="p-row' + dimCls + '">';
     pH += '<div class="p-letter" style="background:' + p.color + '">' + (DL[p.id] || p.id) + '</div>';
-    pH += '<div class="p-info"><div class="p-name">' + p.name + deltaHtml + '</div>';
-    pH += '<div class="p-bar">' + exitBarHtml + '<div class="p-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div></div>';
+    pH += '<div class="p-info"><div class="p-name">' + p.name + '</div>';
+    pH += '<div class="p-bar"><div class="p-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div></div>';
     pH += '<div class="p-pct">' + p.pct.toFixed(1) + '%</div>';
     pH += '<div class="p-chg ' + chCls + '">' + chSign + ch.toFixed(1) + '</div>';
     pH += '<div class="p-seats">' + seatVal + '</div>';
@@ -487,10 +460,7 @@ function setPreset(idx) {
 (function init() {
   var sources = [
     {key:"live", label:"\u25cf LIVE optalt", cls:" live"},
-    {key:"prognose", label:"DR Prognose", cls:""},
-    {key:"median", label:"Exitpoll median", cls:""},
-    {key:"dr", label:"DR exitpoll", cls:""},
-    {key:"tv2", label:"TV 2 exitpoll", cls:""}
+    {key:"prognose", label:"DR Prognose", cls:""}
   ];
   var tH = "";
   for (var i = 0; i < sources.length; i++) {
