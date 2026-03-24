@@ -104,7 +104,7 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <p>Valgresultat-dashboard &middot; 24. marts 2026</p>
 </header>
 <div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 23:32<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
+<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 23:52<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
 <button onclick="location.reload()" style="font-family:inherit;font-size:.72rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
 </div>
 <div class="section-label">Datakilde</div>
@@ -114,7 +114,7 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div class="bloc-grid" id="blocs"></div>
 
 <div class="section-label">Alle partier (175 danske mandater)</div>
-<div style="font-size:.75rem;color:var(--tx2);margin-bottom:.75rem;line-height:1.6">Resultatet er t&aelig;t p&aring; endeligt &mdash; 1301 af 1314 afstemningsomr&aring;der er optalt (97,5%). Fint&aelig;llingen p&aring;g&aring;r stadig og kan rykke decimaler, men rækkef&oslash;lgen ligger fast. Alle 12 partier er over sp&aelig;rregr&aelig;nsen.</div>
+<div style="font-size:.75rem;color:var(--tx2);margin-bottom:.75rem;line-height:1.6">1309 af 1314 afstemningsomr&aring;der optalt (99%) &mdash; dette er i praksis det endelige resultat. Fint&aelig;llingen p&aring;g&aring;r og kan flytte enkelte decimaler, men r&aelig;kkef&oslash;lgen og mandatfordelingen ligger fast. Alle 12 partier er over sp&aelig;rregr&aelig;nsen (2%). Mandater kan i sj&aelig;ldne tilf&aelig;lde flytte ved fint&aelig;lling, men med de nuv&aelig;rende marginer er det usandsynligt.</div>
 <div class="party-grid" id="parties"></div>
 
 <div class="section-label">Nordatlantiske mandater (+4)</div>
@@ -176,7 +176,8 @@ var LIVE_HISTORY = [
   {time:"23:04",areas:1248,total:1314,pctCounted:93.1,data:{"A":22.2,"F":11.4,"V":10.5,"I":9.4,"O":9.3,"M":7.7,"C":7.6,"Ae":6.1,"Oe":5.7,"B":5.5,"Aa":2.4,"H":2.2}},
   {time:"23:14",areas:1253,total:1314,pctCounted:96.3,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.6,"Aa":2.4,"H":2.2}},
   {time:"23:18",areas:1257,total:1314,pctCounted:97.1,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}},
-  {time:"23:24",areas:1301,total:1314,pctCounted:97.5,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}}
+  {time:"23:24",areas:1301,total:1314,pctCounted:97.5,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}},
+  {time:"23:48",areas:1309,total:1314,pctCounted:99.0,data:{"A":21.9,"F":11.6,"V":10.2,"I":9.4,"O":9.1,"M":7.7,"C":7.6,"Oe":6.2,"Ae":5.8,"B":5.7,"Aa":2.5,"H":2.1}}
 ];
 
 var DR_PROGNOSE = {
@@ -351,12 +352,12 @@ function render() {
   naH += 'De gr\u00f8nlandske mandater kan blive afg\u00f8rende \u2014 test scenarierne herunder.';
   naH += '</div>';
 
-  // Færøerne - låst
+  // Færøerne - endeligt resultat
   naH += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;margin-bottom:8px;opacity:.7">';
   naH += '<span style="font-size:.75rem;font-weight:600;color:var(--tx2);min-width:80px">F\u00e6r\u00f8erne</span>';
-  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)">1 r\u00f8d</span>';
-  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)">1 bl\u00e5</span>';
-  naH += '<span style="font-size:.68rem;color:var(--tx3)">Javna\u00f0arflokkurin 45,6% + Sambandsflokkurin 25,3% \u2014 l\u00e5st</span>';
+  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)">Sj\u00far\u00f0ur Skaale (C) \u2014 10.823 st.</span>';
+  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)">Anna Falkenberg (B) \u2014 5.304 st.</span>';
+  naH += '<span style="font-size:.68rem;color:var(--tx3)">Endeligt \u2014 75,5% deltagelse</span>';
   naH += '</div>';
 
   // Grønland - interaktiv
