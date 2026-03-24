@@ -104,7 +104,7 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <p>Valgresultat-dashboard &middot; 24. marts 2026</p>
 </header>
 <div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 22:59<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
+<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 23:32<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
 <button onclick="location.reload()" style="font-family:inherit;font-size:.72rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
 </div>
 <div class="section-label">Datakilde</div>
@@ -112,11 +112,17 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div id="progressArea"></div>
 <div class="section-label">Blokfordeling</div>
 <div class="bloc-grid" id="blocs"></div>
-<div class="section-label">Alle partier</div>
+
+<div class="section-label">Alle partier (175 danske mandater)</div>
+<div style="font-size:.75rem;color:var(--tx2);margin-bottom:.75rem;line-height:1.6">Resultatet er t&aelig;t p&aring; endeligt &mdash; 1301 af 1314 afstemningsomr&aring;der er optalt (97,5%). Fint&aelig;llingen p&aring;g&aring;r stadig og kan rykke decimaler, men rækkef&oslash;lgen ligger fast. Alle 12 partier er over sp&aelig;rregr&aelig;nsen.</div>
 <div class="party-grid" id="parties"></div>
+
+<div class="section-label">Nordatlantiske mandater (+4)</div>
+<div id="nordatlantic"></div>
+
 <div class="divider"></div>
 <div class="section-label">Regeringsmotor</div>
-<p class="cb-desc">Tryk partier for at bygge en koalition. Gul linje = flertal (88). Bruger den valgte datakilde til mandatberegning.</p>
+<p class="cb-desc">V&aelig;lg danske partier og nordatlantiske mandater for at bygge en koalition. Flertal = 90 af 179. Nordatlantiske mandaters blokfarve styres i sektionen ovenfor.</p>
 <div class="presets">
 <div class="section-label" style="margin-bottom:.5rem">Hurtige scenarier</div>
 <div class="preset-grid" id="presets"></div>
@@ -166,7 +172,11 @@ var LIVE_HISTORY = [
   {time:"22:51",areas:1225,total:1314,pctCounted:88.1,data:{"A":22.4,"F":11.3,"V":10.8,"I":9.4,"O":9.4,"M":7.7,"C":7.5,"Ae":6.3,"Oe":5.4,"B":5.3,"H":2.3,"Aa":2.2}},
   {time:"22:53",areas:1249,total:1314,pctCounted:89.8,data:{"A":22.4,"F":11.3,"V":10.7,"I":9.4,"O":9.4,"M":7.7,"C":7.5,"Ae":6.3,"Oe":5.4,"B":5.3,"H":2.3,"Aa":2.2}},
   {time:"22:56",areas:1235,total:1314,pctCounted:90.6,data:{"A":22.3,"F":11.4,"V":10.6,"I":9.4,"O":9.3,"M":7.7,"C":7.5,"Ae":6.2,"Oe":5.6,"B":5.4,"Aa":2.3,"H":2.2}},
-  {time:"22:58",areas:1243,total:1314,pctCounted:91.8,data:{"A":22.3,"F":11.4,"V":10.6,"I":9.4,"O":9.3,"M":7.7,"C":7.5,"Ae":6.1,"Oe":5.7,"B":5.4,"Aa":2.3,"H":2.2}}
+  {time:"22:58",areas:1243,total:1314,pctCounted:91.8,data:{"A":22.3,"F":11.4,"V":10.6,"I":9.4,"O":9.3,"M":7.7,"C":7.5,"Ae":6.1,"Oe":5.7,"B":5.4,"Aa":2.3,"H":2.2}},
+  {time:"23:04",areas:1248,total:1314,pctCounted:93.1,data:{"A":22.2,"F":11.4,"V":10.5,"I":9.4,"O":9.3,"M":7.7,"C":7.6,"Ae":6.1,"Oe":5.7,"B":5.5,"Aa":2.4,"H":2.2}},
+  {time:"23:14",areas:1253,total:1314,pctCounted:96.3,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.6,"Aa":2.4,"H":2.2}},
+  {time:"23:18",areas:1257,total:1314,pctCounted:97.1,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}},
+  {time:"23:24",areas:1301,total:1314,pctCounted:97.5,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}}
 ];
 
 var DR_PROGNOSE = {
@@ -234,6 +244,14 @@ var PRESETS=[
   {name:"S + SF + M",ids:["A","F","M"]},
   {name:"Bl\u00e5 uden M",ids:["V","I","C","O","Ae","H"]}
 ];
+
+var NORD = [
+  {id:"FO1",name:"Javna\u00f0arflokkurin",region:"F\u00e6r\u00f8erne",pct:45.6,bloc:"red",color:"#dc2626",note:"S\u00f8sterparti til Socialdemokratiet. Peger p\u00e5 Mette Frederiksen."},
+  {id:"FO2",name:"Sambandsflokkurin",region:"F\u00e6r\u00f8erne",pct:25.3,bloc:"blue",color:"#2563eb",note:"Borgerligt unionsparti. Peger bl\u00e5t."},
+  {id:"GL1",name:"R\u00f8dt mandat (forventet)",region:"Gr\u00f8nland",pct:0,bloc:"red",color:"#dc2626",note:"Siumut/IA har historisk peget r\u00f8dt. Gr\u00f8nland ikke optalt endnu."},
+  {id:"GL2",name:"Usikkert mandat",region:"Gr\u00f8nland",pct:0,bloc:"unknown",color:"#71717a",note:"Demokraatit (Anna Wangenheim) kan sende f\u00f8rste bl\u00e5 mandat i 15+ \u00e5r. Vil ikke pege p\u00e5 forh\u00e5nd."}
+];
+var nordSelected = {"FO1":"red","FO2":"blue","GL1":"red","GL2":"red"};
 
 var src = "live";
 var selected = {};
@@ -304,17 +322,75 @@ function render() {
     pArea.innerHTML = "";
   }
 
+  // Count nordatlantic mandater per bloc
+  var nRed = 0, nBlue = 0;
+  for (var nid in nordSelected) {
+    if (nordSelected[nid] === "red") nRed++;
+    if (nordSelected[nid] === "blue") nBlue++;
+  }
+  var totalR = rS + nRed;
+  var totalB = bS + nBlue;
+  var MAJ = 90;
+
   var bH = "";
-  bH += '<div class="bloc-card rc"><div class="bloc-label">R\u00f8d blok</div>';
-  bH += '<div class="bloc-num rt">' + rS + '</div>';
-  bH += '<div class="bloc-sub">' + (rS >= 88 ? "Flertal!" : "Mangler " + (88 - rS)) + '</div></div>';
+  bH += '<div class="bloc-card rc"><div class="bloc-label">R\u00f8d blok (inkl. ' + nRed + ' nordatl.)</div>';
+  bH += '<div class="bloc-num rt">' + totalR + '</div>';
+  bH += '<div class="bloc-sub">' + rS + ' danske + ' + nRed + ' nordatl. \u2014 ' + (totalR >= MAJ ? "Flertal!" : "Mangler " + (MAJ - totalR)) + '</div></div>';
   bH += '<div class="bloc-card mc"><div class="bloc-label">Moderaterne</div>';
   bH += '<div class="bloc-num mt">' + mS + '</div>';
-  bH += '<div class="bloc-sub">' + (rS + mS >= 88 && bS + mS >= 88 ? "Kan tippe begge veje" : rS + mS >= 88 ? "Kan give r\u00f8d flertal" : bS + mS >= 88 ? "Kan give bl\u00e5 flertal" : "Ikke nok alene") + '</div></div>';
-  bH += '<div class="bloc-card bc"><div class="bloc-label">Bl\u00e5 blok</div>';
-  bH += '<div class="bloc-num bt">' + bS + '</div>';
-  bH += '<div class="bloc-sub">' + (bS >= 88 ? "Flertal!" : "Mangler " + (88 - bS)) + '</div></div>';
+  bH += '<div class="bloc-sub">' + (totalR + mS >= MAJ && totalB + mS >= MAJ ? "Kan tippe begge veje" : totalR + mS >= MAJ ? "Kan give r\u00f8d flertal" : totalB + mS >= MAJ ? "Kan give bl\u00e5 flertal" : "Ikke nok alene") + '</div></div>';
+  bH += '<div class="bloc-card bc"><div class="bloc-label">Bl\u00e5 blok (inkl. ' + nBlue + ' nordatl.)</div>';
+  bH += '<div class="bloc-num bt">' + totalB + '</div>';
+  bH += '<div class="bloc-sub">' + bS + ' danske + ' + nBlue + ' nordatl. \u2014 ' + (totalB >= MAJ ? "Flertal!" : "Mangler " + (MAJ - totalB)) + '</div></div>';
   document.getElementById("blocs").innerHTML = bH;
+
+  // Nordatlantic section
+  var naH = '<div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius);padding:1rem 1.25rem;margin-bottom:.5rem">';
+  naH += '<div style="font-size:.78rem;color:var(--tx2);line-height:1.7;margin-bottom:1rem">';
+  naH += 'Folketinget = 175 danske + 4 nordatlantiske mandater. Flertal: 90 af 179.<br>';
+  naH += 'De gr\u00f8nlandske mandater kan blive afg\u00f8rende \u2014 test scenarierne herunder.';
+  naH += '</div>';
+
+  // Færøerne - låst
+  naH += '<div style="display:flex;align-items:center;gap:10px;padding:6px 0;margin-bottom:8px;opacity:.7">';
+  naH += '<span style="font-size:.75rem;font-weight:600;color:var(--tx2);min-width:80px">F\u00e6r\u00f8erne</span>';
+  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(248,113,113,.15);color:var(--red);border:1px solid rgba(248,113,113,.3)">1 r\u00f8d</span>';
+  naH += '<span style="font-size:.72rem;padding:4px 10px;border-radius:6px;background:rgba(96,165,250,.15);color:var(--blue);border:1px solid rgba(96,165,250,.3)">1 bl\u00e5</span>';
+  naH += '<span style="font-size:.68rem;color:var(--tx3)">Javna\u00f0arflokkurin 45,6% + Sambandsflokkurin 25,3% \u2014 l\u00e5st</span>';
+  naH += '</div>';
+
+  // Grønland - interaktiv
+  naH += '<div style="border-top:1px solid var(--brd);padding-top:10px">';
+  naH += '<div style="font-size:.75rem;font-weight:600;color:var(--tx2);margin-bottom:8px">Gr\u00f8nland <span style="font-weight:400;color:var(--tx3)">\u2014 ikke optalt endnu \u2014 klik for at teste scenarier</span></div>';
+  var glMandater = [
+    {id:"GL1",name:"Mandat 1",note:"Siumut/IA \u2014 historisk r\u00f8dt i 25+ \u00e5r"},
+    {id:"GL2",name:"Mandat 2",note:"Demokraatit har medvind \u2014 vil ikke pege p\u00e5 forh\u00e5nd"}
+  ];
+  for (var gi = 0; gi < glMandater.length; gi++) {
+    var gp = glMandater[gi];
+    var gSel = nordSelected[gp.id];
+    var gRedS = gSel === "red" ? "background:rgba(248,113,113,.2);border-color:var(--red);color:var(--red)" : "background:var(--s3);border-color:var(--brd);color:var(--tx3)";
+    var gBlueS = gSel === "blue" ? "background:rgba(96,165,250,.2);border-color:var(--blue);color:var(--blue)" : "background:var(--s3);border-color:var(--brd);color:var(--tx3)";
+    naH += '<div style="display:flex;align-items:center;gap:8px;padding:5px 0;flex-wrap:wrap">';
+    naH += '<span style="font-size:.78rem;font-weight:500;color:var(--tx);min-width:80px">' + gp.name + '</span>';
+    naH += '<button class="nord-btn" data-nid="' + gp.id + '" data-bloc="red" style="font-family:inherit;font-size:.7rem;font-weight:500;padding:4px 12px;border-radius:6px;border:1px solid;cursor:pointer;' + gRedS + '">R\u00f8d</button>';
+    naH += '<button class="nord-btn" data-nid="' + gp.id + '" data-bloc="blue" style="font-family:inherit;font-size:.7rem;font-weight:500;padding:4px 12px;border-radius:6px;border:1px solid;cursor:pointer;' + gBlueS + '">Bl\u00e5</button>';
+    naH += '<span style="font-size:.68rem;color:var(--tx3)">' + gp.note + '</span>';
+    naH += '</div>';
+  }
+  naH += '</div></div>';
+  document.getElementById("nordatlantic").innerHTML = naH;
+
+  // Attach grønland button listeners
+  var nordBtns = document.querySelectorAll(".nord-btn");
+  for (var nb = 0; nb < nordBtns.length; nb++) {
+    nordBtns[nb].addEventListener("click", function() {
+      var nid = this.getAttribute("data-nid");
+      var bloc = this.getAttribute("data-bloc");
+      nordSelected[nid] = bloc;
+      render();
+    });
+  }
 
   var sorted = [];
   for (var i = 0; i < P.length; i++) {
@@ -346,7 +422,10 @@ function render() {
   document.getElementById("parties").innerHTML = pH;
 
   var eligible = sorted.filter(function(p) { return p.pct >= 2; });
-  var cH = "";
+  var cH = '';
+
+  // Danske partier grid
+  cH += '<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px">';
   for (var i = 0; i < eligible.length; i++) {
     var p = eligible[i];
     var on = selected[p.id] ? " on" : "";
@@ -354,6 +433,25 @@ function render() {
     cH += '<span class="dot" style="background:' + p.color + '"></span>';
     cH += p.short + '<span class="sb">' + (sMap[p.id] || 0) + '</span></div>';
   }
+  cH += '</div>';
+
+  // Nordatlantiske mandater - separate box
+  cH += '<div style="background:var(--s2);border:1px solid var(--brd);border-radius:8px;padding:8px 12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap">';
+  cH += '<span style="font-size:.7rem;color:var(--tx3);margin-right:4px">Nordatlantiske:</span>';
+  // FO locked
+  cH += '<span style="font-size:.75rem;padding:6px 10px;border-radius:40px;background:var(--s3);border:1px solid var(--brd);color:var(--tx3);opacity:.6"><span class="dot" style="background:#dc2626;display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:4px;vertical-align:middle"></span>F\u00d8 r\u00f8d 1</span>';
+  cH += '<span style="font-size:.75rem;padding:6px 10px;border-radius:40px;background:var(--s3);border:1px solid var(--brd);color:var(--tx3);opacity:.6"><span class="dot" style="background:#2563eb;display:inline-block;width:8px;height:8px;border-radius:3px;margin-right:4px;vertical-align:middle"></span>F\u00d8 bl\u00e5 1</span>';
+  // GL clickable
+  for (var nc = 0; nc < 2; nc++) {
+    var glId = nc === 0 ? "GL1" : "GL2";
+    var ncOn = selected[glId] ? " on" : "";
+    var ncColor = nordSelected[glId] === "red" ? "#dc2626" : "#2563eb";
+    var ncBloc = nordSelected[glId] === "red" ? "r\u00f8d" : "bl\u00e5";
+    cH += '<div class="cb-chip' + ncOn + '" data-pid="' + glId + '" style="font-size:.75rem;padding:6px 10px">';
+    cH += '<span class="dot" style="background:' + ncColor + '"></span>';
+    cH += 'GL ' + ncBloc + '<span class="sb">1</span></div>';
+  }
+  cH += '</div>';
   document.getElementById("chips").innerHTML = cH;
   var chipEls = document.querySelectorAll(".cb-chip");
   for (var i = 0; i < chipEls.length; i++) {
@@ -365,38 +463,57 @@ function render() {
   }
 
   var sel = Object.keys(selected);
-  var tSeats = 0, tPct = 0;
+  var tSeats = 0, tPct = 0, tNord = 0;
   for (var i = 0; i < sel.length; i++) {
-    tSeats += (sMap[sel[i]] || 0);
-    for (var j = 0; j < P.length; j++) {
-      if (P[j].id === sel[i]) { tPct += val(P[j]); break; }
+    if (sel[i].substring(0,2) === "GL") {
+      tNord++;
+    } else {
+      tSeats += (sMap[sel[i]] || 0);
+      for (var j = 0; j < P.length; j++) {
+        if (P[j].id === sel[i]) { tPct += val(P[j]); break; }
+      }
     }
   }
-  var maj = tSeats >= 88;
-  var pctFill = Math.min((tSeats / 175) * 100, 100);
-  var colors = [];
+  // FO mandater tælles automatisk: FO1 (rød) tæller med hvis koalitionen har røde partier, FO2 (blå) hvis blå
+  var selBlocs = {};
   for (var i = 0; i < sel.length; i++) {
     for (var j = 0; j < P.length; j++) {
-      if (P[j].id === sel[i]) { colors.push(P[j].color); break; }
+      if (P[j].id === sel[i]) { selBlocs[P[j].bloc] = true; break; }
+    }
+  }
+  if (selBlocs["red"] || selBlocs["mid"]) tNord++; // FO1 rød
+  if (selBlocs["blue"]) tNord++; // FO2 blå
+  var tTotal = tSeats + tNord;
+  var maj = tTotal >= 90;
+  var pctFill = Math.min((tTotal / 179) * 100, 100);
+  var colors = [];
+  for (var i = 0; i < sel.length; i++) {
+    if (sel[i].substring(0,2) === "FO" || sel[i].substring(0,2) === "GL") {
+      colors.push(nordSelected[sel[i]] === "red" ? "#dc2626" : "#2563eb");
+    } else {
+      for (var j = 0; j < P.length; j++) {
+        if (P[j].id === sel[i]) { colors.push(P[j].color); break; }
+      }
     }
   }
   var grad = "var(--s4)";
   if (colors.length === 1) grad = colors[0];
   if (colors.length > 1) grad = "linear-gradient(90deg," + colors.join(",") + ")";
 
+  var danskePartier = sel.filter(function(s) { return s.substring(0,2) !== "FO" && s.substring(0,2) !== "GL"; }).length;
   var rH = '<div class="cb-meter">';
   rH += '<div class="cb-meter-fill" style="width:' + pctFill + '%;background:' + grad + '"></div>';
-  rH += '<div class="cb-meter-line"></div><div class="cb-meter-label">88</div></div>';
+  rH += '<div class="cb-meter-line"></div><div class="cb-meter-label">90</div></div>';
   rH += '<div class="cb-stats">';
-  rH += '<div><div class="cb-stat-val" style="color:' + (maj ? "var(--green)" : "var(--tx)") + '">' + tSeats + '</div><div class="cb-stat-label">Mandater</div></div>';
-  rH += '<div><div class="cb-stat-val">' + sel.length + '</div><div class="cb-stat-label">Partier</div></div>';
-  rH += '<div><div class="cb-stat-val">' + tPct.toFixed(1) + '%</div><div class="cb-stat-label">Stemmer</div></div></div>';
+  rH += '<div><div class="cb-stat-val" style="color:' + (maj ? "var(--green)" : "var(--tx)") + '">' + tTotal + '</div><div class="cb-stat-label">' + tSeats + ' danske + ' + tNord + ' nordatl.</div></div>';
+  rH += '<div><div class="cb-stat-val">' + danskePartier + '+' + tNord + '</div><div class="cb-stat-label">Partier + nordatl.</div></div>';
+  rH += '<div><div class="cb-stat-val">' + tPct.toFixed(1) + '%</div><div class="cb-stat-label">Danske stemmer</div></div></div>';
 
   if (sel.length > 0) {
     if (maj) {
       rH += '<div class="cb-verdict yes">Flertal! Denne koalition kan danne regering</div>';
     } else {
-      rH += '<div class="cb-verdict no">Mangler ' + (88 - tSeats) + ' mandater for flertal</div>';
+      rH += '<div class="cb-verdict no">Mangler ' + (90 - tTotal) + ' mandater for flertal (90 af 179)</div>';
     }
   } else {
     rH += '<div style="text-align:center;color:var(--tx3);font-size:.82rem;margin-top:.75rem">V\u00e6lg partier for at bygge en koalition</div>';
@@ -458,6 +575,11 @@ function setPreset(idx) {
   selected = {};
   var ids = PRESETS[idx].ids;
   for (var i = 0; i < ids.length; i++) selected[ids[i]] = true;
+  render();
+}
+
+function setNord(id, bloc) {
+  nordSelected[id] = bloc;
   render();
 }
 
