@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Folketingsvalg 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+--bg:#09090b;--s1:#111114;--s2:#18181b;--s3:#1f1f23;--s4:#27272a;
+--tx:#fafafa;--tx2:#a1a1aa;--tx3:#71717a;
+--brd:#27272a;--brd2:#3f3f46;
+--accent:#a78bfa;--accent2:#7c3aed;
+--red:#f87171;--blue:#60a5fa;
+--green:#4ade80;--amber:#fbbf24;
+--radius:14px;--radius-sm:10px;
+}
+body{font-family:'Outfit',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;overflow-x:hidden}
+.container{max-width:880px;margin:0 auto;padding:2rem 1.25rem 3rem}
+header{margin-bottom:2rem}
+header h1{font-size:1.75rem;font-weight:700;letter-spacing:-.03em;background:linear-gradient(135deg,#fff 40%,var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
+.tabs{display:flex;gap:4px;background:var(--s1);border-radius:var(--radius-sm);padding:4px;margin-bottom:.75rem;width:fit-content;border:1px solid var(--brd)}
+.tab{padding:8px 18px;border-radius:8px;font-size:.8rem;font-weight:500;cursor:pointer;color:var(--tx3);transition:all .2s;border:none;background:none;font-family:inherit}
+.tab:hover{color:var(--tx2)}
+.tab.active{background:var(--accent2);color:#fff}
+.tab.live{background:#dc2626;color:#fff;animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.7}}
+.progress-bar{height:4px;background:var(--s3);border-radius:2px;margin-bottom:2rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width 1s}
+.progress-label{font-size:.7rem;color:var(--tx3);margin-bottom:.35rem;font-family:'JetBrains Mono',monospace}
+.section-label{font-size:.7rem;text-transform:uppercase;letter-spacing:.1em;color:var(--tx3);margin-bottom:.75rem;font-weight:600}
+.bloc-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:2rem}
+.bloc-card{background:var(--s1);border-radius:var(--radius);padding:1.25rem;border:1px solid var(--brd);position:relative;overflow:hidden}
+.bloc-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px}
+.bloc-card.rc::before{background:linear-gradient(90deg,#ef4444,#f87171)}
+.bloc-card.mc::before{background:linear-gradient(90deg,var(--accent2),var(--accent))}
+.bloc-card.bc::before{background:linear-gradient(90deg,#3b82f6,#60a5fa)}
+.bloc-label{font-size:.75rem;color:var(--tx3);font-weight:500;margin-bottom:.5rem}
+.bloc-num{font-size:2.25rem;font-weight:700;font-family:'JetBrains Mono',monospace;letter-spacing:-.04em}
+.bloc-num.rt{color:var(--red)}.bloc-num.mt{color:var(--accent)}.bloc-num.bt{color:var(--blue)}
+.bloc-sub{font-size:.75rem;color:var(--tx3);margin-top:.25rem}
+.party-grid{display:flex;flex-direction:column;gap:4px;margin-bottom:2.5rem}
+.p-row{display:grid;grid-template-columns:32px 1fr 54px 50px 40px;gap:10px;align-items:center;padding:10px 14px;background:var(--s1);border-radius:var(--radius-sm);border:1px solid var(--brd);transition:all .2s}
+.p-row:hover{background:var(--s2);border-color:var(--brd2)}
+.p-row.dim{opacity:.35}
+.p-letter{width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.75rem;color:#fff}
+.p-info{min-width:0}
+.p-name{font-size:.85rem;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.p-bar{height:4px;border-radius:2px;margin-top:5px;background:var(--s3);overflow:hidden;position:relative}
+.p-bar-fill{height:100%;border-radius:2px;transition:width .6s cubic-bezier(.22,1,.36,1)}
+.p-bar-exit{position:absolute;top:0;height:100%;border-right:2px solid var(--tx3);opacity:.4;transition:width .6s}
+.p-pct{font-family:'JetBrains Mono',monospace;font-size:.85rem;font-weight:500;text-align:right}
+.p-chg{font-family:'JetBrains Mono',monospace;font-size:.78rem;text-align:right}
+.p-chg.up{color:var(--green)}.p-chg.dn{color:var(--red)}
+.p-seats{font-family:'JetBrains Mono',monospace;font-size:.78rem;text-align:right;color:var(--tx2)}
+.divider{height:1px;background:var(--brd);margin:1.5rem 0}
+.cb-desc{font-size:.85rem;color:var(--tx2);margin-bottom:1rem;line-height:1.6}
+.cb-grid{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:1.5rem}
+.cb-chip{display:flex;align-items:center;gap:7px;padding:8px 14px;background:var(--s1);border:1.5px solid var(--brd);border-radius:40px;cursor:pointer;transition:all .2s;user-select:none;font-size:.82rem;font-weight:500}
+.cb-chip:hover{border-color:var(--brd2);background:var(--s2)}
+.cb-chip.on{border-color:var(--accent);background:rgba(167,139,250,.1)}
+.cb-chip .dot{width:10px;height:10px;border-radius:4px;flex-shrink:0}
+.cb-chip .sb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--tx3);margin-left:2px}
+.cb-result{background:var(--s1);border-radius:var(--radius);border:1px solid var(--brd);padding:1.5rem;margin-bottom:1.25rem}
+.cb-meter{position:relative;height:36px;background:var(--s3);border-radius:8px;overflow:hidden;margin-bottom:1rem}
+.cb-meter-fill{height:100%;border-radius:8px;transition:width .5s cubic-bezier(.22,1,.36,1)}
+.cb-meter-line{position:absolute;top:0;bottom:0;width:2px;background:var(--amber);left:50.28%;z-index:2}
+.cb-meter-label{position:absolute;top:-18px;left:50.28%;transform:translateX(-50%);font-size:.65rem;color:var(--amber);font-family:'JetBrains Mono',monospace;font-weight:500}
+.cb-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;text-align:center}
+.cb-stat-val{font-size:1.5rem;font-weight:700;font-family:'JetBrains Mono',monospace}
+.cb-stat-label{font-size:.7rem;color:var(--tx3);margin-top:2px}
+.cb-verdict{margin-top:1rem;padding:12px 16px;border-radius:var(--radius-sm);font-size:.85rem;font-weight:500;text-align:center}
+.cb-verdict.yes{background:rgba(74,222,128,.1);color:var(--green);border:1px solid rgba(74,222,128,.2)}
+.cb-verdict.no{background:rgba(248,113,113,.08);color:var(--red);border:1px solid rgba(248,113,113,.15)}
+.compat-title{font-size:.8rem;font-weight:600;color:var(--tx2);margin-bottom:.75rem}
+.compat-grid{display:flex;flex-direction:column;gap:4px}
+.compat-row{display:flex;align-items:center;gap:10px;font-size:.8rem;padding:6px 10px;background:var(--s2);border-radius:8px}
+.compat-pair{font-weight:500;min-width:90px;color:var(--tx2)}
+.compat-bar-wrap{flex:1;height:6px;background:var(--s3);border-radius:3px;overflow:hidden}
+.compat-bar{height:100%;border-radius:3px;transition:width .4s}
+.compat-val{font-size:.72rem;min-width:40px;text-align:right;font-weight:500}
+.compat-val.high{color:var(--green)}.compat-val.med{color:var(--amber)}.compat-val.low{color:var(--red)}
+.compat-note{font-size:.7rem;color:var(--tx3);padding:0 10px 4px;margin-top:-2px}
+.presets{margin-bottom:1.5rem}
+.preset-grid{display:flex;flex-wrap:wrap;gap:6px}
+.preset-btn{padding:7px 14px;border-radius:8px;font-size:.78rem;font-weight:500;background:var(--s2);border:1px solid var(--brd);color:var(--tx2);cursor:pointer;transition:all .15s;font-family:inherit}
+.preset-btn:hover{border-color:var(--accent);color:var(--tx);background:var(--s3)}
+.footer{text-align:center;font-size:.7rem;color:var(--tx3);margin-top:2rem;line-height:1.7}
+.delta-badge{display:inline-block;font-size:.65rem;padding:2px 6px;border-radius:4px;margin-left:6px;font-family:'JetBrains Mono',monospace;vertical-align:middle}
+.delta-badge.pos{background:rgba(74,222,128,.12);color:var(--green)}
+.delta-badge.neg{background:rgba(248,113,113,.1);color:var(--red)}
+@media(max-width:600px){
+.bloc-grid{gap:6px}.bloc-card{padding:1rem .75rem}.bloc-num{font-size:1.75rem}
+.p-row{grid-template-columns:28px 1fr 46px 44px 34px;gap:6px;padding:8px 10px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+<h1>Folketingsvalg 2026</h1>
+<p>Exitpoll-dashboard &middot; 24. marts 2026</p>
+</header>
+<div class="section-label">Datakilde</div>
+<div class="tabs" id="tabs"></div>
+<div id="progressArea"></div>
+<div class="section-label">Blokfordeling</div>
+<div class="bloc-grid" id="blocs"></div>
+<div class="section-label">Alle partier</div>
+<div class="party-grid" id="parties"></div>
+<div class="divider"></div>
+<div class="section-label">Regeringsmotor</div>
+<p class="cb-desc">Tryk partier for at bygge en koalition. Gul linje = flertal (88). Bruger den valgte datakilde til mandatberegning.</p>
+<div class="presets">
+<div class="section-label" style="margin-bottom:.5rem">Hurtige scenarier</div>
+<div class="preset-grid" id="presets"></div>
+</div>
+<div class="cb-grid" id="chips"></div>
+<div class="cb-result" id="result"></div>
+<div id="compat"></div>
+<div class="footer">
+<div style="font-size:.85rem;font-weight:600;color:var(--tx2);margin-bottom:.5rem">Deles uden ansvar</div>
+Exitpoll-data: DR/Epinion &amp; TV 2/Megafon. Faktiske resultater: valg.dk. Prognose: DR.<br>
+Mandatestimater via forholdstalsfordeling af 175 mandater (undtagen DR Prognose som bruger DR's egne mandattal).<br>
+Kompatibilitetsvurderinger er redaktionelle estimater baseret p&aring; partiernes udmeldinger valgaften.<br>
+Kongemager = parti uden for blokken der alene kan give en blok flertal (88+).<br>
+<span style="color:var(--tx3)">Bygget med Claude &middot; Valgaften 24. marts 2026</span>
+</div>
+</div>
+<script>
+var P=[
+  {id:"A",name:"Socialdemokratiet",short:"S",color:"#dc2626",dr:19.2,tv2:20.8,v22:27.5,bloc:"red"},
+  {id:"F",name:"SF",short:"SF",color:"#ec4899",dr:11.4,tv2:12.3,v22:8.3,bloc:"red"},
+  {id:"I",name:"Liberal Alliance",short:"LA",color:"#06b6d4",dr:10.5,tv2:10.0,v22:7.9,bloc:"blue"},
+  {id:"V",name:"Venstre",short:"V",color:"#2563eb",dr:9.3,tv2:9.0,v22:13.3,bloc:"blue"},
+  {id:"O",name:"Dansk Folkeparti",short:"DF",color:"#eab308",dr:7.5,tv2:7.6,v22:2.6,bloc:"blue"},
+  {id:"C",name:"Konservative",short:"K",color:"#059669",dr:7.1,tv2:7.5,v22:5.5,bloc:"blue"},
+  {id:"Ae",name:"Danmarksdemokraterne",short:"DD",color:"#a16207",dr:7.8,tv2:6.8,v22:8.1,bloc:"blue"},
+  {id:"Oe",name:"Enhedslisten",short:"EL",color:"#e11d48",dr:6.4,tv2:6.6,v22:5.1,bloc:"red"},
+  {id:"M",name:"Moderaterne",short:"M",color:"#8b5cf6",dr:8.2,tv2:5.6,v22:9.3,bloc:"mid"},
+  {id:"B",name:"Radikale Venstre",short:"RV",color:"#7c3aed",dr:6.0,tv2:5.4,v22:3.8,bloc:"red"},
+  {id:"Aa",name:"Alternativet",short:"Alt",color:"#16a34a",dr:4.1,tv2:3.5,v22:3.3,bloc:"red"},
+  {id:"H",name:"Borgernes Parti",short:"BP",color:"#71717a",dr:2.1,tv2:2.3,v22:0,bloc:"blue"}
+];
+
+var LIVE_HISTORY = [
+  {time:"21:17",areas:278,total:1314,pctCounted:6.3,data:{"A":21.1,"V":13.9,"Ae":13.3,"O":10.5,"F":9.1,"I":8.9,"M":6.0,"C":5.1,"H":3.7,"Oe":3.7,"B":2.9,"Aa":0}},
+  {time:"21:33",areas:482,total:1314,pctCounted:15.8,data:{"A":22.0,"V":13.4,"Ae":11.2,"O":10.6,"F":9.5,"I":9.0,"M":6.5,"C":5.8,"Oe":3.7,"B":3.3,"H":3.3,"Aa":1.7}},
+  {time:"21:40",areas:579,total:1314,pctCounted:21.3,data:{"A":22.2,"V":12.8,"O":10.4,"Ae":10.3,"F":9.9,"I":9.0,"M":6.8,"C":6.3,"Oe":3.8,"B":3.6,"H":3.1,"Aa":1.8}},
+  {time:"21:43",areas:596,total:1314,pctCounted:22.7,data:{"A":22.4,"V":12.7,"O":10.4,"Ae":10.1,"F":9.8,"I":9.0,"M":6.9,"C":6.4,"Oe":3.9,"B":3.7,"H":3.1,"Aa":1.8}},
+  {time:"21:49",areas:698,total:1314,pctCounted:30.0,data:{"A":22.1,"V":12.5,"O":10.1,"F":10.0,"I":9.2,"Ae":9.1,"M":7.3,"C":6.9,"Oe":4.1,"B":4.1,"H":2.8,"Aa":1.8}},
+  {time:"22:00",areas:840,total:1314,pctCounted:41.6,data:{"A":22.5,"V":12.0,"F":10.4,"O":10.1,"I":9.1,"Ae":8.4,"M":7.3,"C":7.0,"Oe":4.3,"B":4.3,"H":2.7,"Aa":1.9}},
+  {time:"22:04",areas:904,total:1314,pctCounted:47.5,data:{"A":22.7,"V":11.9,"F":10.4,"O":10.1,"I":9.2,"Ae":8.1,"M":7.4,"C":7.0,"Oe":4.4,"B":4.3,"H":2.7,"Aa":1.8}}
+];
+
+var DR_PROGNOSE = {
+  time: "21:33",
+  pct: {"A":21.0,"V":10.6,"F":10.6,"O":9.6,"I":9.4,"Ae":8.2,"M":7.6,"C":7.0,"Oe":5.2,"B":4.9,"Aa":2.9,"H":2.7},
+  seats: {"A":37,"V":19,"F":19,"O":17,"I":16,"Ae":14,"M":13,"C":12,"Oe":9,"B":9,"Aa":5,"H":5}
+};
+
+var DL={"A":"A","F":"F","I":"I","V":"V","O":"O","C":"C","Ae":"\u00C6","Oe":"\u00D8","M":"M","B":"B","Aa":"\u00C5","H":"H"};
+
+var COMPAT={
+  "A-M":{s:65,n:"Har regeret sammen i SVM, men S vil i r\u00f8d retning"},
+  "A-V":{s:50,n:"SVM-slid, men pragmatisk samarbejde muligt"},
+  "A-B":{s:80,n:"Traditionelt t\u00e6tte \u2014 RV \u00e5ben for S-ledet regering"},
+  "A-F":{s:85,n:"Naturlige allierede, SF vil i r\u00f8d regering"},
+  "A-Oe":{s:55,n:"St\u00f8tteparti, men EL vil typisk ikke i regering"},
+  "A-Aa":{s:65,n:"Kan st\u00f8tte r\u00f8d regering udefra"},
+  "A-C":{s:30,n:"Abildgaard: sv\u00e6rt at se for sig"},
+  "A-I":{s:15,n:"Meget langt fra hinanden politisk"},
+  "A-O":{s:10,n:"Stort set udelukket samarbejde"},
+  "A-Ae":{s:20,n:"Messerschmidt i skarp opposition til S"},
+  "A-H":{s:10,n:"Intet naturligt samarbejde"},
+  "V-M":{s:60,n:"Har regeret sammen, men intern rivalisering"},
+  "V-I":{s:75,n:"Bl\u00e5 kernesamarbejde"},
+  "V-C":{s:80,n:"T\u00e6tte borgerlige partnere"},
+  "V-O":{s:45,n:"Historisk samarbejde, men DF mere national"},
+  "V-Ae":{s:55,n:"Kan samarbejde i bl\u00e5 blok"},
+  "V-B":{s:55,n:"Historisk samarbejde"},
+  "V-H":{s:55,n:"Borgerligt overlap"},
+  "V-Oe":{s:10,n:"Intet naturligt overlap"},
+  "M-C":{s:65,n:"Kan enes om \u00f8konomisk politik"},
+  "M-B":{s:70,n:"Midterpartierne t\u00e6t p\u00e5 hinanden"},
+  "M-I":{s:50,n:"Liberale overlap, men LA mere h\u00f8jre"},
+  "M-F":{s:40,n:"Langt fra hinanden p\u00e5 \u00f8konomi"},
+  "M-O":{s:25,n:"L\u00f8kke og Messerschmidt i \u00e5ben konflikt"},
+  "M-Ae":{s:35,n:"Messerschmidt vil \u00e6de Moderaterne"},
+  "M-Oe":{s:15,n:"Fundamentalt uenige"},
+  "M-Aa":{s:30,n:"Begr\u00e6nset overlap"},
+  "I-C":{s:75,n:"Borgerligt kernesamarbejde"},
+  "I-O":{s:35,n:"Enige om udl\u00e6ndinge, uenige p\u00e5 \u00f8konomi"},
+  "I-Ae":{s:50,n:"Kan samarbejde i bl\u00e5 blok"},
+  "I-H":{s:60,n:"Liberal-borgerligt overlap"},
+  "I-Oe":{s:5,n:"Diametralt modsatte"},
+  "O-Ae":{s:60,n:"National-konservativt overlap"},
+  "F-Oe":{s:70,n:"Venstrefl\u00f8jspartnere"},
+  "F-B":{s:55,n:"Kan samarbejde"},
+  "F-Aa":{s:75,n:"Gr\u00f8n alliance"},
+  "Oe-Aa":{s:70,n:"Venstrefl\u00f8jen"},
+  "C-O":{s:40,n:"Kan samarbejde"},
+  "C-Ae":{s:45,n:"Kan samarbejde trods forskelle"},
+  "C-H":{s:55,n:"Borgerligt samarbejde"},
+  "B-C":{s:50,n:"Pragmatisk overlap"},
+  "B-O":{s:15,n:"Meget langt fra hinanden"},
+  "B-Ae":{s:20,n:"Politisk afstand"},
+  "Aa-V":{s:15,n:"Intet f\u00e6lles grundlag"}
+};
+
+var PRESETS=[
+  {name:"SVM genvalg",ids:["A","V","M"]},
+  {name:"R\u00f8d + M",ids:["A","F","Oe","B","Aa","M"]},
+  {name:"Bl\u00e5 + M",ids:["V","I","C","O","Ae","M","H"]},
+  {name:"S + M + RV + K",ids:["A","M","B","C"]},
+  {name:"Bred midte",ids:["A","V","M","B","C"]},
+  {name:"Ren r\u00f8d",ids:["A","F","Oe","B","Aa"]},
+  {name:"S + SF + M",ids:["A","F","M"]},
+  {name:"Bl\u00e5 uden M",ids:["V","I","C","O","Ae","H"]}
+];
+
+var src = "live";
+var selected = {};
+
+function val(p) {
+  if (src === "dr") return p.dr;
+  if (src === "tv2") return p.tv2;
+  if (src === "median") return Math.round((p.dr + p.tv2) / 2 * 10) / 10;
+  if (src === "prognose") {
+    if (DR_PROGNOSE.pct[p.id] !== undefined) return DR_PROGNOSE.pct[p.id];
+    return 0;
+  }
+  if (src === "live") {
+    var latest = LIVE_HISTORY[LIVE_HISTORY.length - 1];
+    if (latest && latest.data[p.id] !== undefined) return latest.data[p.id];
+    return 0;
+  }
+  return 0;
+}
+
+function medianVal(p) {
+  return Math.round((p.dr + p.tv2) / 2 * 10) / 10;
+}
+
+function calcSeats() {
+  if (src === "prognose") {
+    var m = {};
+    for (var id in DR_PROGNOSE.seats) m[id] = DR_PROGNOSE.seats[id];
+    return m;
+  }
+  var data = [];
+  for (var i = 0; i < P.length; i++) {
+    data.push({id: P[i].id, pct: val(P[i]), bloc: P[i].bloc});
+  }
+  var elig = data.filter(function(p) { return p.pct >= 2.0; });
+  var tot = 0;
+  for (var i = 0; i < elig.length; i++) tot += elig[i].pct;
+  var res = [];
+  for (var i = 0; i < elig.length; i++) {
+    var raw = (elig[i].pct / tot) * 175;
+    res.push({id: elig[i].id, raw: raw, s: Math.floor(raw), bloc: elig[i].bloc});
+  }
+  var assigned = 0;
+  for (var i = 0; i < res.length; i++) assigned += res[i].s;
+  var rem = res.map(function(p, i) { return {i: i, r: p.raw - p.s}; });
+  rem.sort(function(a, b) { return b.r - a.r; });
+  var idx = 0;
+  while (assigned < 175) { res[rem[idx].i].s++; assigned++; idx++; }
+  var m = {};
+  for (var i = 0; i < res.length; i++) m[res[i].id] = res[i].s;
+  return m;
+}
+
+function getCompat(a, b) {
+  return COMPAT[a + "-" + b] || COMPAT[b + "-" + a] || {s: 40, n: "Ingen tydelig udmelding"};
+}
+function barColor(s) { return s >= 65 ? "var(--green)" : s >= 40 ? "var(--amber)" : "var(--red)"; }
+function barClass(s) { return s >= 65 ? "high" : s >= 40 ? "med" : "low"; }
+
+function render() {
+  var sMap = calcSeats();
+  var rS = 0, bS = 0, mS = sMap["M"] || 0;
+  for (var i = 0; i < P.length; i++) {
+    if (P[i].bloc === "red") rS += (sMap[P[i].id] || 0);
+    if (P[i].bloc === "blue") bS += (sMap[P[i].id] || 0);
+  }
+
+  var pArea = document.getElementById("progressArea");
+  if (src === "live") {
+    var latest = LIVE_HISTORY[LIVE_HISTORY.length - 1];
+    var pctDone = latest ? (latest.areas / latest.total * 100).toFixed(1) : 0;
+    pArea.innerHTML = '<div class="progress-label">' + (latest ? latest.areas : 0) + ' / ' + (latest ? latest.total : 1314) + ' afstemningsomr\u00e5der optalt (' + pctDone + '%) \u2014 kl. ' + (latest ? latest.time : "") + '</div>' +
+      '<div class="progress-bar"><div class="progress-fill" style="width:' + pctDone + '%"></div></div>';
+  } else if (src === "prognose") {
+    pArea.innerHTML = '<div class="progress-label">DR Prognose (fremskrivning baseret p\u00e5 opt\u00e6lling + meningsm\u00e5lingsdata) \u2014 kl. ' + DR_PROGNOSE.time + '</div>' +
+      '<div class="progress-bar"><div class="progress-fill" style="width:100%;background:var(--amber)"></div></div>';
+  } else {
+    pArea.innerHTML = "";
+  }
+
+  var bH = "";
+  bH += '<div class="bloc-card rc"><div class="bloc-label">R\u00f8d blok</div>';
+  bH += '<div class="bloc-num rt">' + rS + '</div>';
+  bH += '<div class="bloc-sub">' + (rS >= 88 ? "Flertal!" : "Mangler " + (88 - rS)) + '</div></div>';
+  bH += '<div class="bloc-card mc"><div class="bloc-label">Moderaterne</div>';
+  bH += '<div class="bloc-num mt">' + mS + '</div>';
+  bH += '<div class="bloc-sub">' + (rS + mS >= 88 && bS + mS >= 88 ? "Kan tippe begge veje" : rS + mS >= 88 ? "Kan give r\u00f8d flertal" : bS + mS >= 88 ? "Kan give bl\u00e5 flertal" : "Ikke nok alene") + '</div></div>';
+  bH += '<div class="bloc-card bc"><div class="bloc-label">Bl\u00e5 blok</div>';
+  bH += '<div class="bloc-num bt">' + bS + '</div>';
+  bH += '<div class="bloc-sub">' + (bS >= 88 ? "Flertal!" : "Mangler " + (88 - bS)) + '</div></div>';
+  document.getElementById("blocs").innerHTML = bH;
+
+  var sorted = [];
+  for (var i = 0; i < P.length; i++) {
+    sorted.push({id:P[i].id,name:P[i].name,short:P[i].short,color:P[i].color,pct:val(P[i]),v22:P[i].v22,bloc:P[i].bloc,dr:P[i].dr,tv2:P[i].tv2});
+  }
+  sorted.sort(function(a, b) { return b.pct - a.pct; });
+  var mx = 0;
+  for (var i = 0; i < sorted.length; i++) { if (sorted[i].pct > mx) mx = sorted[i].pct; }
+
+  var pH = "";
+  for (var i = 0; i < sorted.length; i++) {
+    var p = sorted[i];
+    var ch = Math.round((p.pct - p.v22) * 10) / 10;
+    var chSign = ch > 0 ? "+" : "";
+    var chCls = ch > 0 ? "up" : "dn";
+    var dimCls = p.pct < 2 ? " dim" : "";
+    var barW = mx > 0 ? (p.pct / mx * 100).toFixed(1) : 0;
+    var seatVal = sMap[p.id] || 0;
+
+    var exitBarHtml = "";
+    if (src === "live") {
+      var eMed = Math.round((p.dr + p.tv2) / 2 * 10) / 10;
+      var exitBarW = mx > 0 ? (eMed / mx * 100).toFixed(1) : 0;
+      exitBarHtml = '<div class="p-bar-exit" style="width:' + exitBarW + '%"></div>';
+    }
+
+    var deltaHtml = "";
+    if (src === "live") {
+      var eMed2 = Math.round((p.dr + p.tv2) / 2 * 10) / 10;
+      var diff = Math.round((p.pct - eMed2) * 10) / 10;
+      if (diff !== 0) {
+        var dCls = diff > 0 ? "pos" : "neg";
+        var dSign = diff > 0 ? "+" : "";
+        deltaHtml = '<span class="delta-badge ' + dCls + '">' + dSign + diff.toFixed(1) + ' vs exit</span>';
+      }
+    }
+
+    pH += '<div class="p-row' + dimCls + '">';
+    pH += '<div class="p-letter" style="background:' + p.color + '">' + (DL[p.id] || p.id) + '</div>';
+    pH += '<div class="p-info"><div class="p-name">' + p.name + deltaHtml + '</div>';
+    pH += '<div class="p-bar">' + exitBarHtml + '<div class="p-bar-fill" style="width:' + barW + '%;background:' + p.color + '"></div></div></div>';
+    pH += '<div class="p-pct">' + p.pct.toFixed(1) + '%</div>';
+    pH += '<div class="p-chg ' + chCls + '">' + chSign + ch.toFixed(1) + '</div>';
+    pH += '<div class="p-seats">' + seatVal + '</div>';
+    pH += '</div>';
+  }
+  document.getElementById("parties").innerHTML = pH;
+
+  var eligible = sorted.filter(function(p) { return p.pct >= 2; });
+  var cH = "";
+  for (var i = 0; i < eligible.length; i++) {
+    var p = eligible[i];
+    var on = selected[p.id] ? " on" : "";
+    cH += '<div class="cb-chip' + on + '" data-pid="' + p.id + '">';
+    cH += '<span class="dot" style="background:' + p.color + '"></span>';
+    cH += p.short + '<span class="sb">' + (sMap[p.id] || 0) + '</span></div>';
+  }
+  document.getElementById("chips").innerHTML = cH;
+  var chipEls = document.querySelectorAll(".cb-chip");
+  for (var i = 0; i < chipEls.length; i++) {
+    chipEls[i].addEventListener("click", function() {
+      var pid = this.getAttribute("data-pid");
+      if (selected[pid]) delete selected[pid]; else selected[pid] = true;
+      render();
+    });
+  }
+
+  var sel = Object.keys(selected);
+  var tSeats = 0, tPct = 0;
+  for (var i = 0; i < sel.length; i++) {
+    tSeats += (sMap[sel[i]] || 0);
+    for (var j = 0; j < P.length; j++) {
+      if (P[j].id === sel[i]) { tPct += val(P[j]); break; }
+    }
+  }
+  var maj = tSeats >= 88;
+  var pctFill = Math.min((tSeats / 175) * 100, 100);
+  var colors = [];
+  for (var i = 0; i < sel.length; i++) {
+    for (var j = 0; j < P.length; j++) {
+      if (P[j].id === sel[i]) { colors.push(P[j].color); break; }
+    }
+  }
+  var grad = "var(--s4)";
+  if (colors.length === 1) grad = colors[0];
+  if (colors.length > 1) grad = "linear-gradient(90deg," + colors.join(",") + ")";
+
+  var rH = '<div class="cb-meter">';
+  rH += '<div class="cb-meter-fill" style="width:' + pctFill + '%;background:' + grad + '"></div>';
+  rH += '<div class="cb-meter-line"></div><div class="cb-meter-label">88</div></div>';
+  rH += '<div class="cb-stats">';
+  rH += '<div><div class="cb-stat-val" style="color:' + (maj ? "var(--green)" : "var(--tx)") + '">' + tSeats + '</div><div class="cb-stat-label">Mandater</div></div>';
+  rH += '<div><div class="cb-stat-val">' + sel.length + '</div><div class="cb-stat-label">Partier</div></div>';
+  rH += '<div><div class="cb-stat-val">' + tPct.toFixed(1) + '%</div><div class="cb-stat-label">Stemmer</div></div></div>';
+
+  if (sel.length > 0) {
+    if (maj) {
+      rH += '<div class="cb-verdict yes">Flertal! Denne koalition kan danne regering</div>';
+    } else {
+      rH += '<div class="cb-verdict no">Mangler ' + (88 - tSeats) + ' mandater for flertal</div>';
+    }
+  } else {
+    rH += '<div style="text-align:center;color:var(--tx3);font-size:.82rem;margin-top:.75rem">V\u00e6lg partier for at bygge en koalition</div>';
+  }
+  document.getElementById("result").innerHTML = rH;
+
+  var cEl = document.getElementById("compat");
+  if (sel.length >= 2) {
+    var pairs = [];
+    for (var i = 0; i < sel.length; i++) {
+      for (var j = i + 1; j < sel.length; j++) {
+        var pa = null, pb = null;
+        for (var k = 0; k < P.length; k++) {
+          if (P[k].id === sel[i]) pa = P[k];
+          if (P[k].id === sel[j]) pb = P[k];
+        }
+        var c = getCompat(sel[i], sel[j]);
+        pairs.push({a: pa.short, b: pb.short, score: c.s, note: c.n});
+      }
+    }
+    pairs.sort(function(a, b) { return a.score - b.score; });
+    var avgSum = 0;
+    for (var i = 0; i < pairs.length; i++) avgSum += pairs[i].score;
+    var avg = Math.round(avgSum / pairs.length);
+    var weakest = pairs[0];
+    var cpH = '<div class="compat-title">Kompatibilitet \u00b7 Gns: ';
+    cpH += '<span style="color:' + barColor(avg) + '">' + avg + '/100</span>';
+    if (weakest) {
+      cpH += ' \u00b7 Svageste: <span style="color:' + barColor(weakest.score) + '">' + weakest.a + '\u2013' + weakest.b + ' (' + weakest.score + ')</span>';
+    }
+    cpH += '</div><div class="compat-grid">';
+    for (var i = 0; i < pairs.length; i++) {
+      var pp = pairs[i];
+      cpH += '<div class="compat-row"><span class="compat-pair">' + pp.a + ' \u2013 ' + pp.b + '</span>';
+      cpH += '<div class="compat-bar-wrap"><div class="compat-bar" style="width:' + pp.score + '%;background:' + barColor(pp.score) + '"></div></div>';
+      cpH += '<span class="compat-val ' + barClass(pp.score) + '">' + pp.score + '</span></div>';
+      cpH += '<div class="compat-note">' + pp.note + '</div>';
+    }
+    cpH += '</div>';
+    cEl.innerHTML = cpH;
+  } else if (sel.length === 1) {
+    cEl.innerHTML = '<div style="font-size:.8rem;color:var(--tx3);margin-top:.5rem">V\u00e6lg mindst \u00e9t parti mere for kompatibilitet.</div>';
+  } else {
+    cEl.innerHTML = "";
+  }
+}
+
+function setSrc(newSrc) {
+  src = newSrc;
+  var tabs = document.querySelectorAll(".tab");
+  for (var i = 0; i < tabs.length; i++) tabs[i].classList.remove("active");
+  for (var i = 0; i < tabs.length; i++) {
+    if (tabs[i].getAttribute("data-src") === newSrc) tabs[i].classList.add("active");
+  }
+  render();
+}
+
+function setPreset(idx) {
+  selected = {};
+  var ids = PRESETS[idx].ids;
+  for (var i = 0; i < ids.length; i++) selected[ids[i]] = true;
+  render();
+}
+
+(function init() {
+  var sources = [
+    {key:"live", label:"\u25cf LIVE optalt", cls:" live"},
+    {key:"prognose", label:"DR Prognose", cls:""},
+    {key:"median", label:"Exitpoll median", cls:""},
+    {key:"dr", label:"DR exitpoll", cls:""},
+    {key:"tv2", label:"TV 2 exitpoll", cls:""}
+  ];
+  var tH = "";
+  for (var i = 0; i < sources.length; i++) {
+    var s = sources[i];
+    var active = s.key === src ? " active" : "";
+    if (s.key === "live" && src === "live") active = " active live";
+    else if (s.key === "live") active = "";
+    tH += '<button class="tab' + active + s.cls + '" data-src="' + s.key + '" onclick="setSrc(\'' + s.key + '\')">' + s.label + '</button>';
+  }
+  document.getElementById("tabs").innerHTML = tH;
+
+  var preH = "";
+  for (var i = 0; i < PRESETS.length; i++) {
+    preH += '<button class="preset-btn" onclick="setPreset(' + i + ')">' + PRESETS[i].name + '</button>';
+  }
+  document.getElementById("presets").innerHTML = preH;
+
+  render();
+})();
+</script>
+</body>
+</html>
