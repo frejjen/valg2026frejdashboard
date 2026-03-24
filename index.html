@@ -103,6 +103,10 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <h1>Folketingsvalg 2026</h1>
 <p>Exitpoll-dashboard &middot; 24. marts 2026</p>
 </header>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:1rem;flex-wrap:wrap">
+<div style="font-size:.68rem;color:var(--tx3);line-height:1.5">Data fra valg.dk tastes ind i Claude og uploades til GitHub &middot; Genereret kl. 22:20</div>
+<button onclick="location.reload()" style="font-family:inherit;font-size:.7rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
+</div>
 <div class="section-label">Datakilde</div>
 <div class="tabs" id="tabs"></div>
 <div id="progressArea"></div>
@@ -125,7 +129,6 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 Exitpoll-data: DR/Epinion &amp; TV 2/Megafon. Faktiske resultater: valg.dk. Prognose: DR.<br>
 Mandatestimater via forholdstalsfordeling af 175 mandater (undtagen DR Prognose som bruger DR's egne mandattal).<br>
 Kompatibilitetsvurderinger er redaktionelle estimater baseret p&aring; partiernes udmeldinger valgaften.<br>
-Kongemager = parti uden for blokken der alene kan give en blok flertal (88+).<br>
 <span style="color:var(--tx3)">Bygget med Claude &middot; Valgaften 24. marts 2026</span>
 </div>
 </div>
@@ -152,7 +155,9 @@ var LIVE_HISTORY = [
   {time:"21:43",areas:596,total:1314,pctCounted:22.7,data:{"A":22.4,"V":12.7,"O":10.4,"Ae":10.1,"F":9.8,"I":9.0,"M":6.9,"C":6.4,"Oe":3.9,"B":3.7,"H":3.1,"Aa":1.8}},
   {time:"21:49",areas:698,total:1314,pctCounted:30.0,data:{"A":22.1,"V":12.5,"O":10.1,"F":10.0,"I":9.2,"Ae":9.1,"M":7.3,"C":6.9,"Oe":4.1,"B":4.1,"H":2.8,"Aa":1.8}},
   {time:"22:00",areas:840,total:1314,pctCounted:41.6,data:{"A":22.5,"V":12.0,"F":10.4,"O":10.1,"I":9.1,"Ae":8.4,"M":7.3,"C":7.0,"Oe":4.3,"B":4.3,"H":2.7,"Aa":1.9}},
-  {time:"22:04",areas:904,total:1314,pctCounted:47.5,data:{"A":22.7,"V":11.9,"F":10.4,"O":10.1,"I":9.2,"Ae":8.1,"M":7.4,"C":7.0,"Oe":4.4,"B":4.3,"H":2.7,"Aa":1.8}}
+  {time:"22:04",areas:904,total:1314,pctCounted:47.5,data:{"A":22.7,"V":11.9,"F":10.4,"O":10.1,"I":9.2,"Ae":8.1,"M":7.4,"C":7.0,"Oe":4.4,"B":4.3,"H":2.7,"Aa":1.8}},
+  {time:"22:16",areas:1043,total:1314,pctCounted:61.8,data:{"A":22.8,"V":11.5,"F":10.7,"O":10.0,"I":9.3,"M":7.6,"Ae":7.4,"C":7.2,"Oe":4.6,"B":4.5,"H":2.5,"Aa":1.9}},
+  {time:"22:18",areas:1073,total:1314,pctCounted:64.9,data:{"A":22.8,"V":11.4,"F":10.8,"O":9.9,"I":9.3,"M":7.6,"C":7.3,"Ae":7.2,"M":7.6,"Oe":4.7,"B":4.6,"H":2.5,"Aa":2.0}}
 ];
 
 var DR_PROGNOSE = {
