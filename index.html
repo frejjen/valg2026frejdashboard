@@ -104,7 +104,7 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <p>Valgresultat-dashboard &middot; 24. marts 2026</p>
 </header>
 <div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius-sm);padding:10px 14px;margin-bottom:1.25rem;display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
-<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Data fra valg.dk behandles i Claude og uploades til GitHub &middot; Genereret kl. 23:52<br>Forl&oslash;bet sker manuelt og fors&oslash;ges opdateret max hver 15 min indtil der findes et resultat.</div>
+<div style="font-size:.7rem;color:var(--tx3);line-height:1.5">Danske resultater er endelige (1313/1314 omr&aring;der, 99,8%). Gr&oslash;nlands resultater opdateres n&aring;r Rigsombuddet i Gr&oslash;nland offentligg&oslash;r dem efter midnat gr&oslash;nlandsk tid (forventet tidlig morgen 25/3 dansk tid).<br>Genereret kl. 00:07 &middot; Data fra valg.dk &middot; Behandlet i Claude &middot; Uploadet til GitHub.</div>
 <button onclick="location.reload()" style="font-family:inherit;font-size:.72rem;font-weight:500;padding:5px 12px;border-radius:6px;background:var(--s3);color:var(--tx2);border:1px solid var(--brd);cursor:pointer;white-space:nowrap">Hent nyeste</button>
 </div>
 <div class="section-label">Datakilde</div>
@@ -114,7 +114,7 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div class="bloc-grid" id="blocs"></div>
 
 <div class="section-label">Alle partier (175 danske mandater)</div>
-<div style="font-size:.75rem;color:var(--tx2);margin-bottom:.75rem;line-height:1.6">1309 af 1314 afstemningsomr&aring;der optalt (99%) &mdash; dette er i praksis det endelige resultat. Fint&aelig;llingen p&aring;g&aring;r og kan flytte enkelte decimaler, men r&aelig;kkef&oslash;lgen og mandatfordelingen ligger fast. Alle 12 partier er over sp&aelig;rregr&aelig;nsen (2%). Mandater kan i sj&aelig;ldne tilf&aelig;lde flytte ved fint&aelig;lling, men med de nuv&aelig;rende marginer er det usandsynligt.</div>
+<div style="font-size:.75rem;color:var(--tx2);margin-bottom:.75rem;line-height:1.6">1313 af 1314 afstemningsomr&aring;der optalt (99,8%). Det danske valgresultat er endeligt. Fint&aelig;llingen forts&aelig;tter de kommende dage men &aelig;ndrer ikke mandatfordelingen. Alle 12 partier er over sp&aelig;rregr&aelig;nsen. Gr&oslash;nlands 2 mandater mangler stadig &mdash; de kan afg&oslash;re om r&oslash;d blok n&aring;r 90.</div>
 <div class="party-grid" id="parties"></div>
 
 <div class="section-label">Nordatlantiske mandater (+4)</div>
@@ -130,6 +130,17 @@ header p{color:var(--tx3);font-size:.85rem;margin-top:.35rem}
 <div class="cb-grid" id="chips"></div>
 <div class="cb-result" id="result"></div>
 <div id="compat"></div>
+
+<div class="divider"></div>
+<div class="section-label">Analyse: Hvem kan danne regering?</div>
+<div style="background:var(--s1);border:1px solid var(--brd);border-radius:var(--radius);overflow:hidden;margin-bottom:1.5rem">
+<div style="display:flex;border-bottom:1px solid var(--brd)" id="analysisTabs">
+<button class="atab active" data-tab="red" style="flex:1;padding:10px;font-family:inherit;font-size:.8rem;font-weight:600;border:none;cursor:pointer;background:none;color:var(--red);border-bottom:2px solid var(--red)">R&oslash;d blok</button>
+<button class="atab" data-tab="blue" style="flex:1;padding:10px;font-family:inherit;font-size:.8rem;font-weight:600;border:none;cursor:pointer;background:none;color:var(--tx3);border-bottom:2px solid transparent">Bl&aring; blok</button>
+</div>
+<div id="analysisContent" style="padding:1.25rem;font-size:.82rem;color:var(--tx2);line-height:1.8"></div>
+</div>
+
 <div class="footer">
 <div style="font-size:.85rem;font-weight:600;color:var(--tx2);margin-bottom:.5rem">Deles uden ansvar</div>
 Faktiske resultater: valg.dk. Prognose: DR. Reference: Folketingsvalg 2022.<br>
@@ -177,7 +188,9 @@ var LIVE_HISTORY = [
   {time:"23:14",areas:1253,total:1314,pctCounted:96.3,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.6,"Aa":2.4,"H":2.2}},
   {time:"23:18",areas:1257,total:1314,pctCounted:97.1,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}},
   {time:"23:24",areas:1301,total:1314,pctCounted:97.5,data:{"A":22.0,"F":11.5,"V":10.3,"I":9.4,"O":9.2,"M":7.7,"C":7.6,"Oe":6.0,"Ae":5.9,"B":5.7,"Aa":2.5,"H":2.2}},
-  {time:"23:48",areas:1309,total:1314,pctCounted:99.0,data:{"A":21.9,"F":11.6,"V":10.2,"I":9.4,"O":9.1,"M":7.7,"C":7.6,"Oe":6.2,"Ae":5.8,"B":5.7,"Aa":2.5,"H":2.1}}
+  {time:"23:48",areas:1309,total:1314,pctCounted:99.0,data:{"A":21.9,"F":11.6,"V":10.2,"I":9.4,"O":9.1,"M":7.7,"C":7.6,"Oe":6.2,"Ae":5.8,"B":5.7,"Aa":2.5,"H":2.1}},
+  {time:"00:02",areas:1312,total:1314,pctCounted:99.6,data:{"A":21.9,"F":11.6,"V":10.2,"I":9.4,"O":9.1,"M":7.7,"C":7.6,"Oe":6.3,"B":5.8,"Ae":5.8,"Aa":2.5,"H":2.1}},
+  {time:"00:06",areas:1313,total:1314,pctCounted:99.8,data:{"A":21.9,"F":11.6,"V":10.2,"I":9.4,"O":9.1,"M":7.7,"C":7.6,"Oe":6.3,"B":5.8,"Ae":5.8,"Aa":2.6,"H":2.1}}
 ];
 
 var DR_PROGNOSE = {
@@ -522,16 +535,18 @@ function render() {
   document.getElementById("result").innerHTML = rH;
 
   var cEl = document.getElementById("compat");
-  if (sel.length >= 2) {
+  var danskeIds = sel.filter(function(s) { return s.substring(0,2) !== "GL" && s.substring(0,2) !== "FO"; });
+  if (danskeIds.length >= 2) {
     var pairs = [];
-    for (var i = 0; i < sel.length; i++) {
-      for (var j = i + 1; j < sel.length; j++) {
+    for (var i = 0; i < danskeIds.length; i++) {
+      for (var j = i + 1; j < danskeIds.length; j++) {
         var pa = null, pb = null;
         for (var k = 0; k < P.length; k++) {
-          if (P[k].id === sel[i]) pa = P[k];
-          if (P[k].id === sel[j]) pb = P[k];
+          if (P[k].id === danskeIds[i]) pa = P[k];
+          if (P[k].id === danskeIds[j]) pb = P[k];
         }
-        var c = getCompat(sel[i], sel[j]);
+        if (!pa || !pb) continue;
+        var c = getCompat(danskeIds[i], danskeIds[j]);
         pairs.push({a: pa.short, b: pb.short, score: c.s, note: c.n});
       }
     }
@@ -555,8 +570,8 @@ function render() {
     }
     cpH += '</div>';
     cEl.innerHTML = cpH;
-  } else if (sel.length === 1) {
-    cEl.innerHTML = '<div style="font-size:.8rem;color:var(--tx3);margin-top:.5rem">V\u00e6lg mindst \u00e9t parti mere for kompatibilitet.</div>';
+  } else if (danskeIds.length === 1) {
+    cEl.innerHTML = '<div style="font-size:.8rem;color:var(--tx3);margin-top:.5rem">V\u00e6lg mindst \u00e9t dansk parti mere for kompatibilitet.</div>';
   } else {
     cEl.innerHTML = "";
   }
@@ -586,16 +601,14 @@ function setNord(id, bloc) {
 
 (function init() {
   var sources = [
-    {key:"live", label:"\u25cf LIVE optalt", cls:" live"},
-    {key:"prognose", label:"DR Prognose", cls:""}
+    {key:"live", label:"Endeligt resultat", cls:""},
+    {key:"prognose", label:"DR Prognose (tidl.)", cls:""}
   ];
   var tH = "";
   for (var i = 0; i < sources.length; i++) {
     var s = sources[i];
     var active = s.key === src ? " active" : "";
-    if (s.key === "live" && src === "live") active = " active live";
-    else if (s.key === "live") active = "";
-    tH += '<button class="tab' + active + s.cls + '" data-src="' + s.key + '" onclick="setSrc(\'' + s.key + '\')">' + s.label + '</button>';
+    tH += '<button class="tab' + active + '" data-src="' + s.key + '" onclick="setSrc(\'' + s.key + '\')">' + s.label + '</button>';
   }
   document.getElementById("tabs").innerHTML = tH;
 
@@ -607,6 +620,64 @@ function setNord(id, bloc) {
 
   render();
 })();
+
+var ANALYSIS = {
+  red: '<div style="font-weight:600;color:var(--tx);margin-bottom:8px">Regnestykket</div>'
+    + '<div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;margin-bottom:12px;font-family:JetBrains Mono,monospace;font-size:.78rem">'
+    + '<span>S (regering)</span><span style="text-align:right">~39</span>'
+    + '<span>SF (regering)</span><span style="text-align:right">~20</span>'
+    + '<span>EL (st\u00f8tte udefra)</span><span style="text-align:right">~11</span>'
+    + '<span>RV (st\u00f8tte udefra)</span><span style="text-align:right">~10</span>'
+    + '<span>Alt (st\u00f8tte udefra)</span><span style="text-align:right">~4</span>'
+    + '<span style="border-top:1px solid var(--brd);padding-top:4px;font-weight:600;color:var(--tx)">Danske mandater</span><span style="border-top:1px solid var(--brd);padding-top:4px;text-align:right;font-weight:600;color:var(--tx)">84</span>'
+    + '<span>F\u00e6r\u00f8erne (r\u00f8dt, endeligt)</span><span style="text-align:right">+1</span>'
+    + '<span>Gr\u00f8nland (bedste scenarie)</span><span style="text-align:right">+2</span>'
+    + '<span style="border-top:1px solid var(--brd);padding-top:4px;font-weight:600;color:var(--red)">Total</span><span style="border-top:1px solid var(--brd);padding-top:4px;text-align:right;font-weight:600;color:var(--red)">87 af 90</span>'
+    + '</div>'
+    + '<div style="font-weight:600;color:var(--tx);margin-bottom:6px">Konklusion</div>'
+    + '<div style="margin-bottom:10px">Selv med alle r\u00f8de partier og 3 r\u00f8de nordatlantiske mandater n\u00e5r r\u00f8d blok kun 87. De mangler 3 for flertal. En ren r\u00f8d regering er matematisk umulig.</div>'
+    + '<div style="font-weight:600;color:var(--tx);margin-bottom:6px">Hvad s\u00e5?</div>'
+    + '<div style="margin-bottom:6px"><span style="color:var(--accent);font-weight:500">Moderaterne (14 mandater)</span> er den eneste realistiske vej til flertal. S+SF+M = ~73 danske, plus st\u00f8ttepartier og nordatlantiske giver over 90. Men det gentager SVM-modellen \u2014 og Enhedslisten har ikke glemt at Mette F. valgte L\u00f8kke frem for dem i 2022.</div>'
+    + '<div><span style="color:var(--tx);font-weight:500">Dilemmaet:</span> L\u00f8kke i regering g\u00f8r EL til modstander. EL uden for aftalerne g\u00f8r det sv\u00e6rt at levere p\u00e5 velf\u00e6rd og klima. Mette F. skal v\u00e6lge hvem hun vil skuffe.</div>',
+
+  blue: '<div style="font-weight:600;color:var(--tx);margin-bottom:8px">Regnestykket</div>'
+    + '<div style="display:grid;grid-template-columns:1fr auto;gap:4px 16px;margin-bottom:12px;font-family:JetBrains Mono,monospace;font-size:.78rem">'
+    + '<span>V (regering)</span><span style="text-align:right">~18</span>'
+    + '<span>LA (regering)</span><span style="text-align:right">~16</span>'
+    + '<span>K (regering/st\u00f8tte)</span><span style="text-align:right">~13</span>'
+    + '<span>DF (st\u00f8tte)</span><span style="text-align:right">~16</span>'
+    + '<span>DD (st\u00f8tte)</span><span style="text-align:right">~10</span>'
+    + '<span>BP (st\u00f8tte)</span><span style="text-align:right">~4</span>'
+    + '<span style="border-top:1px solid var(--brd);padding-top:4px;font-weight:600;color:var(--tx)">Bl\u00e5 blok danske</span><span style="border-top:1px solid var(--brd);padding-top:4px;text-align:right;font-weight:600;color:var(--tx)">~77</span>'
+    + '<span>F\u00e6r\u00f8erne (bl\u00e5t, endeligt)</span><span style="text-align:right">+1</span>'
+    + '<span>Gr\u00f8nland (bedste scenarie)</span><span style="text-align:right">+1</span>'
+    + '<span style="border-top:1px solid var(--brd);padding-top:4px;font-weight:600;color:var(--blue)">Total</span><span style="border-top:1px solid var(--brd);padding-top:4px;text-align:right;font-weight:600;color:var(--blue)">79 af 90</span>'
+    + '</div>'
+    + '<div style="font-weight:600;color:var(--tx);margin-bottom:6px">Konklusion</div>'
+    + '<div style="margin-bottom:10px">Bl\u00e5 blok mangler 11 mandater for flertal \u2014 selv med Moderaterne (14) n\u00e5r de ~91-93 hvis alle bl\u00e5 partier og M samarbejder. Teknisk muligt, men kr\u00e6ver 6-7 partier der skal enes.</div>'
+    + '<div style="font-weight:600;color:var(--tx);margin-bottom:6px">Udfordringerne</div>'
+    + '<div style="margin-bottom:6px"><span style="color:var(--tx);font-weight:500">Statsministersp\u00f8rgsm\u00e5let:</span> LA (~16) og V (~18) er t\u00e6t. Vanopslagh har meldt sig som statsministerkandidat. Troels Lund Poulsen insisterer ogs\u00e5. Hvem leder?</div>'
+    + '<div style="margin-bottom:6px"><span style="color:var(--tx);font-weight:500">DF + DD konflikten:</span> Messerschmidt og St\u00f8jberg konkurrerer om de samme v\u00e6lgere. Begge kr\u00e6ver h\u00e5rd udl\u00e6ndingepolitik \u2014 men er uenige om alt andet.</div>'
+    + '<div><span style="color:var(--tx);font-weight:500">L\u00f8kke som brobygger?</span> Bl\u00e5 blok + M = flertal, men L\u00f8kke har regeret med Mette F. i tre \u00e5r. Bl\u00e5 blok stoler ikke p\u00e5 ham.</div>'
+};
+
+function renderAnalysis(tab) {
+  document.getElementById("analysisContent").innerHTML = ANALYSIS[tab];
+  var tabs = document.querySelectorAll(".atab");
+  for (var i = 0; i < tabs.length; i++) {
+    var t = tabs[i];
+    var isActive = t.getAttribute("data-tab") === tab;
+    t.style.color = isActive ? (tab === "red" ? "var(--red)" : "var(--blue)") : "var(--tx3)";
+    t.style.borderBottom = isActive ? "2px solid " + (tab === "red" ? "var(--red)" : "var(--blue)") : "2px solid transparent";
+  }
+}
+
+document.getElementById("analysisTabs").addEventListener("click", function(e) {
+  var btn = e.target.closest(".atab");
+  if (btn) renderAnalysis(btn.getAttribute("data-tab"));
+});
+
+renderAnalysis("red");
 </script>
 </body>
 </html>
